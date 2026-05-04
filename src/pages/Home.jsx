@@ -22,6 +22,13 @@ function Home() {
       description: 'Convert any video format to high-quality MP3 audio.',
       path: '/video-to-mp3',
       icon: '🎵'
+    },
+    {
+      id: 'player',
+      name: 'Local Video Player',
+      description: 'Play local videos instantly with zero uploads. Secure, private, and fast.',
+      path: '/player',
+      icon: '📺'
     }
     // Future tools can be added here
   ];
