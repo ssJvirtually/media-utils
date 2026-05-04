@@ -42,11 +42,15 @@ export async function convertVideo(file, outputFormat, setProgress, setStatus) {
 
     await ffmpeg.writeFile('input', await fetchFile(file));
 
-    // For simplicity and speed, we use copy codec where possible
-    // Note: copy might not work for all format transitions, but for common ones like mov/mp4/mkv it's fine.
+    // Explicitly map audio and video streams for complex files like Blu-ray rips.
+    // Copy video for speed, but convert audio to AAC for wide compatibility across formats.
     await ffmpeg.exec([
       '-i', 'input',
-      '-c', 'copy',
+      '-map', '0:v:0',    // Map first video stream
+      '-map', '0:a:0?',   // Map first audio stream if it exists
+      '-c:v', 'copy',     // Copy video to retain quality and speed
+      '-c:a', 'aac',      // Encode audio to AAC for better format compatibility (e.g., MP4)
+      '-b:a', '192k',     // Audio bitrate
       outputName
     ]);
 
